@@ -1,11 +1,19 @@
 {
-  "name": "youtube",
-  "type": "registry:icon",
+  "name": "youtube-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
   "files": [
     {
-      "path": "icons/youtube.tsx",
-      "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n  <path d=\"M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17\"/>\n  <path d=\"m10 15 5-3-5-3z\"/>\n</svg>",
-      "type": "registry:icon"
+      "path": "ui/youtube-icon.tsx",
+      "content": "\"use client\"\n\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\n\nexport const YouTubeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: { duration: number; ease: string; repeat: number }\n    }\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      const anims: AnimDef[] = [\n        {\n          selector: \".yt-play\",\n          keyframes: { scale: [1, 1.2, 1] },\n          options: { duration: 0.8, ease: \"easeInOut\", repeat: Infinity },\n        },\n      ]\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(\n          anim.selector,\n          anim.keyframes,\n          opts,\n        )\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      animate(\".yt-play\", { scale: 1 }, { duration: 0.3 })\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n        <path d=\"M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17\" />\n        <motion.path\n          className=\"yt-play\"\n          d=\"m10 15 5-3-5-3z\"\n          style={{ originX: \"12.5px\", originY: \"12px\" }}\n        />\n      </motion.svg>\n    )\n  },\n)\n\nYouTubeIcon.displayName = \"YouTubeIcon\"\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n",
+      "type": "registry:file"
     }
   ],
   "categories": [
