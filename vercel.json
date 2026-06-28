@@ -1,4 +1,3 @@
 {
-  "buildCommand": "cd apps/docs && pnpm build",
   "installCommand": "pnpm install"
 }
