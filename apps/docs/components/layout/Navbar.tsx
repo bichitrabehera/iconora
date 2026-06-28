@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { GitHubIcon } from "../ui/github-icon";
+import { TwitterIcon } from "../ui/twitter-icon";
+import { LinkedInIcon } from "../ui/linkedin-icon";
 
 export function Navbar() {
   return (
     <header className="border-border bg-background/80 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
-          iconora
+        <Link
+          href="/"
+          className="text-xl font-semibold tracking-tight text-neutral-400"
+        >
+          <span className="text-blue-600">icon</span>ora
         </Link>
         <div className="flex gap-6">
           <a
@@ -14,7 +20,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            Github
+            <GitHubIcon className="h-5 w-5" />
           </a>
           <a
             href="https://x.com/in/bichitradotdev"
@@ -22,7 +28,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            X
+            <TwitterIcon className="h-5 w-5" />
           </a>
           <a
             href="https://linkedin.com/in/bichitrabehera"
@@ -30,7 +36,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            LinkedIn
+            <LinkedInIcon className="h-5 w-5" />
           </a>
         </div>
       </div>

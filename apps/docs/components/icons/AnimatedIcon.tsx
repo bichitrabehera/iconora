@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   InstagramIcon,
@@ -8,8 +8,8 @@ import {
   LinkedInIcon,
   DiscordIcon,
   FigmaIcon,
-} from "@iconora/icons"
-import type { AnimatedIconProps } from "@iconora/icons"
+} from "@iconora/icons";
+import type { AnimatedIconProps } from "@iconora/icons";
 
 const components: Record<string, React.ComponentType<AnimatedIconProps>> = {
   instagram: InstagramIcon,
@@ -19,14 +19,14 @@ const components: Record<string, React.ComponentType<AnimatedIconProps>> = {
   linkedin: LinkedInIcon,
   discord: DiscordIcon,
   figma: FigmaIcon,
-}
+};
 
 export function AnimatedIcon({
   slug,
   size = 24,
   ...props
 }: { slug: string } & Partial<AnimatedIconProps>) {
-  const Component = components[slug]
-  if (!Component) return null
-  return <Component size={size} {...props} />
+  const Component = components[slug];
+  if (!Component) return null;
+  return <Component size={size} {...props} />;
 }

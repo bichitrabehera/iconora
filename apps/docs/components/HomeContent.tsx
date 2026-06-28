@@ -1,36 +1,48 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { icons as allIcons, searchIcons, getCategories } from "@/lib/icon-data"
-import { IconCard } from "@/components/icons/IconCard"
-import { IconGrid } from "@/components/icons/IconGrid"
-import { SearchBar } from "@/components/shared/SearchBar"
+import { useState, useMemo } from "react";
+import { icons as allIcons, searchIcons, getCategories } from "@/lib/icon-data";
+import { IconCard } from "@/components/icons/IconCard";
+import { IconGrid } from "@/components/icons/IconGrid";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { motion } from "motion/react";
 
 export function HomeContent() {
-  const [query, setQuery] = useState("")
-  const [browseOpen, setBrowseOpen] = useState(false)
+  const [query, setQuery] = useState("");
+  const [browseOpen, setBrowseOpen] = useState(true);
 
-  const categories = useMemo(() => getCategories(), [])
+  const categories = useMemo(() => getCategories(), []);
 
   const filtered = useMemo(() => {
-    if (!query) return allIcons
-    return searchIcons(query)
-  }, [query])
+    if (!query) return allIcons;
+    return searchIcons(query);
+  }, [query]);
 
   const browseByCategory = useMemo(() => {
     return categories.map((cat) => ({
       ...cat,
       icons: allIcons.filter((i) => i.category === cat.slug),
-    }))
-  }, [categories])
+    }));
+  }, [categories]);
 
   return (
     <>
       <section className="mx-auto max-w-6xl px-4 pt-28 pb-8 text-center sm:pt-32">
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-          iconora
+        <h1 className="text-6xl font-semibold tracking-tight text-neutral-400 sm:text-5xl">
+          <motion.span
+            className="inline-block text-blue-900"
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{
+              duration: 0.7,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            icon
+          </motion.span>
+          ora
         </h1>
-        <p className="mt-3 text-muted-foreground text">
+        <p className="text-muted-foreground text mt-3">
           Hand-crafted animated icons for React.
         </p>
         <div className="mx-auto mt-6 max-w-md">
@@ -38,50 +50,19 @@ export function HomeContent() {
         </div>
       </section>
 
-      {query ? (
-        <section className="mx-auto max-w-6xl px-4 pb-28">
-          <p className="mb-4 text text-muted-foreground">
-            {filtered.length} result{filtered.length !== 1 ? "s" : ""} for &quot;{query}&quot;
-          </p>
-          <IconGrid icons={filtered} />
-        </section>
-      ) : (
-        <>
-          <section className="mx-auto max-w-6xl px-4 pb-8">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {allIcons.slice(0, 4).map((icon) => (
-                <IconCard key={icon.slug} icon={icon} />
-              ))}
-            </div>
-          </section>
-
-          <section className="mx-auto max-w-6xl px-4 pb-28 text-center">
-            <button
-              onClick={() => setBrowseOpen(!browseOpen)}
-              className="cursor-pointer rounded-lg border border-border px-5 py-2 text text-muted-foreground transition-colors hover:border-ring hover:text-foreground"
-            >
-              {browseOpen ? "Show less" : "Browse all icons"}
-            </button>
-
-            {browseOpen && (
-              <div className="mt-8 text-left">
-                {browseByCategory.map((cat) => (
-                  <div key={cat.slug} className="mb-8">
-                    <h2 className="mb-3 text-left text font-semibold capitalize">
-                      {cat.slug} ({cat.count})
-                    </h2>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                      {cat.icons.map((icon) => (
-                        <IconCard key={icon.slug} icon={icon} />
-                      ))}
-                    </div>
-                  </div>
+      {browseOpen && (
+        <div className="mx-auto mt-8 max-w-6xl px-4 text-left">
+          {browseByCategory.map((cat) => (
+            <div key={cat.slug} className="mb-8">
+              <div className="grid grid-cols-3 gap-4 sm:grid-cols-3 xl:grid-cols-6">
+                {cat.icons.map((icon) => (
+                  <IconCard key={icon.slug} icon={icon} />
                 ))}
               </div>
-            )}
-          </section>
-        </>
+            </div>
+          ))}
+        </div>
       )}
     </>
-  )
+  );
 }
