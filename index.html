@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="">hiiiiiiiiiiiiii</div>
+    <div class="">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <style>
+          @keyframes fg-rock {
+            0%,
+            100% {
+              transform: rotate(0deg);
+            }
+            50% {
+              transform: rotate(-10deg);
+            }
+          }
+          @keyframes fg-rock2 {
+            0%,
+            100% {
+              transform: rotate(0deg);
+            }
+            50% {
+              transform: rotate(10deg);
+            }
+          }
+          .icon:hover .fg-tl {
+            animation: fg-rock 1s ease-in-out infinite;
+            transform-origin: 8.5px 5.5px;
+          }
+          .icon:hover .fg-tr {
+            animation: fg-rock2 1s ease-in-out infinite;
+            transform-origin: 15.5px 5.5px;
+          }
+          .icon:hover .fg-b {
+            animation: fg-rock2 1s ease-in-out infinite;
+            transform-origin: 15.5px 12.5px;
+          }
+          .icon:hover .fg-bl {
+            animation: fg-rock 1s ease-in-out infinite;
+            transform-origin: 8.5px 12.5px;
+          }
+          .icon:hover .fg-bl2 {
+            animation: fg-rock 1s ease-in-out infinite;
+            transform-origin: 8.5px 19.5px;
+          }
+        </style>
+        <g class="icon">
+          <path
+            class="fg-tl"
+            d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5"
+          />
+          <path class="fg-tr" d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2" />
+          <path class="fg-b" d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0" />
+          <path
+            class="fg-bl2"
+            d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0"
+          />
+          <path
+            class="fg-bl"
+            d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5"
+          />
+        </g>
+      </svg>
+    </div>
+  </body>
+</html>

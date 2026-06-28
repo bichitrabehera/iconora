@@ -1,0 +1,8 @@
+export { InstagramIcon } from "./Instagram"
+export { GitHubIcon } from "./GitHub"
+export { TwitterIcon } from "./Twitter"
+export { YouTubeIcon } from "./YouTube"
+export { LinkedInIcon } from "./LinkedIn"
+export { DiscordIcon } from "./Discord"
+export { FigmaIcon } from "./Figma"
+export type { AnimatedIconProps, AnimatedIconHandle } from "./types"
