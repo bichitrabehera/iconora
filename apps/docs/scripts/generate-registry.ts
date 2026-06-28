@@ -27,11 +27,13 @@ for (const icon of icons) {
         path: `ui/${icon.slug}-icon.tsx`,
         content: source,
         type: "registry:component",
+        target: `@ui/${icon.slug}-icon.tsx`,
       },
       {
         path: "ui/types.ts",
         content: typesSource,
         type: "registry:file",
+        target: "@ui/types.ts",
       },
     ],
     categories: [icon.category],
