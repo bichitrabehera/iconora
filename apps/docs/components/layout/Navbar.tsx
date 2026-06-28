@@ -1,7 +1,4 @@
 import Link from "next/link";
-import { GitHubIcon } from "../ui/github-icon";
-import { TwitterIcon } from "../ui/twitter-icon";
-import { LinkedInIcon } from "../ui/linkedin-icon";
 
 export function Navbar() {
   return (
@@ -12,12 +9,12 @@ export function Navbar() {
         </Link>
         <div className="flex gap-6">
           <a
-            href="https://github.com/bichitrabehera/iconora"
+            href="https://github.com/bichitrabehera"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            <GitHubIcon />
+            Github
           </a>
           <a
             href="https://x.com/in/bichitradotdev"
@@ -25,7 +22,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            <TwitterIcon />
+            X
           </a>
           <a
             href="https://linkedin.com/in/bichitrabehera"
@@ -33,7 +30,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text transition-colors"
           >
-            <LinkedInIcon />
+            LinkedIn
           </a>
         </div>
       </div>

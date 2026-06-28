@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -29,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("dark", geistMono.className, "font-sans", geist.variable)}>
+    <html lang="en" className={`${geistMono.className} dark`}>
       <body className="bg-background text-foreground min-h-screen antialiased">
         {children}
       </body>
