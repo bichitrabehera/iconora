@@ -1,9 +1,45 @@
-export { InstagramIcon } from "./instagram"
-export { GitHubIcon } from "./github"
-export { TwitterIcon } from "./twitter"
-export { YouTubeIcon } from "./youtube"
-export { LinkedInIcon } from "./linkedin"
-export { DiscordIcon } from "./discord"
-export { FigmaIcon } from "./figma"
+import {
+  InstagramIcon,
+  instagramIconData,
+  GitHubIcon,
+  githubIconData,
+  TwitterIcon,
+  twitterIconData,
+  YouTubeIcon,
+  youTubeIconData,
+  LinkedInIcon,
+  linkedInIconData,
+  DiscordIcon,
+  discordIconData,
+  FigmaIcon,
+  figmaIconData,
+} from "./exports"
 
-export type { AnimatedIconProps, AnimatedIconHandle } from "./types"
+export {
+  InstagramIcon,
+  instagramIconData,
+  GitHubIcon,
+  githubIconData,
+  TwitterIcon,
+  twitterIconData,
+  YouTubeIcon,
+  youTubeIconData,
+  LinkedInIcon,
+  linkedInIconData,
+  DiscordIcon,
+  discordIconData,
+  FigmaIcon,
+  figmaIconData,
+}
+
+export type { AnimatedIconProps, AnimatedIconHandle, IconData } from "./types"
+
+export const icons = [
+  instagramIconData,
+  githubIconData,
+  twitterIconData,
+  youTubeIconData,
+  linkedInIconData,
+  discordIconData,
+  figmaIconData,
+]

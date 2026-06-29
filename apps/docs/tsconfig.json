@@ -6,12 +6,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@iconora/icons": [
-        "../../packages/icons/index.ts"
-      ],
-      "@iconora/icons/*": [
-        "../../packages/icons/*"
       ]
     },
     "plugins": [

@@ -10,6 +10,7 @@ import {
 import { motion, useAnimate } from "motion/react"
 import type { AnimatedIconProps, AnimatedIconHandle } from "./types"
 import type { AnimationOptions } from "motion/react"
+import { twitterIconData } from "./twitter.data"
 
 export const TwitterIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   (

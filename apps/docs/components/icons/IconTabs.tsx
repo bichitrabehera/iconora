@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { IconData } from "@/lib/icon-data";
 import { CodeBlock } from "@/components/shared/CodeBlock";
-import { CopyButton } from "@/components/shared/CopyButton";
+import { CodeBlockCommand } from "../code-block-command";
 
 const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
@@ -43,9 +43,11 @@ export function IconTabs({ icon }: { icon: IconData }) {
       <div>
         {active === "shadcn" && (
           <div>
-            <CodeBlock
-              title="shadcn CLI"
-              code={`npx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+            <CodeBlockCommand
+              // prompt="Add this component to your project"
+              pnpm={`pnpm dlx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+              npm={`npx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+              bun={`bunx --bun shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
             />
           </div>
         )}

@@ -11,6 +11,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.mjs",
+      "require": "./dist/data.js"
+    },
     "./*": "./dist/*"
   },
   "scripts": {

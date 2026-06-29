@@ -13,3 +13,11 @@ export type AnimatedIconHandle = {
   startAnimation: () => void
   stopAnimation: () => void
 }
+
+export type IconData = {
+  name: string
+  slug: string
+  category: string
+  tags: string[]
+  svg: string
+}

@@ -31,7 +31,7 @@ export function HomeContent() {
         <h1 className="text-6xl font-semibold tracking-tight text-neutral-400 sm:text-5xl">
           <motion.span
             className="inline-block text-blue-900"
-            animate={{ rotate: [0, 10, -10, 0] }}
+            animate={{ rotate: [0, 5, 0, -5, 0] }}
             transition={{
               duration: 0.7,
               repeat: Infinity,
