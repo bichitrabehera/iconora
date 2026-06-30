@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   forwardRef,
@@ -6,10 +6,10 @@ import {
   useRef,
   useCallback,
   useEffect,
-} from "react"
-import { motion, useAnimate } from "motion/react"
-import type { AnimatedIconProps, AnimatedIconHandle } from "./types"
-import type { AnimationOptions } from "motion/react"
+} from "react";
+import { motion, useAnimate } from "motion/react";
+import type { AnimatedIconProps, AnimatedIconHandle } from "./types";
+import type { AnimationOptions } from "motion/react";
 
 export const GitHubIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   (
@@ -25,19 +25,19 @@ export const GitHubIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     },
     ref,
   ) => {
-    const [scope, animate] = useAnimate()
-    const controls = useRef<Array<ReturnType<typeof animate>>>([])
-    const isHovering = useRef(false)
+    const [scope, animate] = useAnimate();
+    const controls = useRef<Array<ReturnType<typeof animate>>>([]);
+    const isHovering = useRef(false);
 
     type AnimDef = {
-      selector: string
-      keyframes: Record<string, number[]>
-      options: { duration: number; ease: string; repeat: number }
-    }
+      selector: string;
+      keyframes: Record<string, number[]>;
+      options: { duration: number; ease: string; repeat: number };
+    };
 
     const start = useCallback(async () => {
-      controls.current.forEach((c) => c.stop())
-      controls.current = []
+      controls.current.forEach((c) => c.stop());
+      controls.current = [];
 
       const anims: AnimDef[] = [
         {
@@ -50,47 +50,59 @@ export const GitHubIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           keyframes: { rotate: [0, 15, 0, -15, 0] },
           options: { duration: 1.5, ease: "easeInOut", repeat: Infinity },
         },
-      ]
+      ];
 
       for (const anim of anims) {
         const opts = {
           ...anim.options,
           ...(duration ? { duration } : {}),
           ...(!loop ? { repeat: 0 } : {}),
-        } as AnimationOptions
-        const ctrl = animate(
-          anim.selector,
-          anim.keyframes,
-          opts,
-        )
-        controls.current.push(ctrl)
+        } as AnimationOptions;
+        const ctrl = animate(anim.selector, anim.keyframes, opts);
+        controls.current.push(ctrl);
       }
-    }, [animate, loop, duration])
+    }, [animate, loop, duration]);
 
     const stop = useCallback(async () => {
-      controls.current.forEach((c) => c.stop())
-      controls.current = []
-      animate(".gh-body", { y: 0 }, { duration: 0.3 })
-      animate(".gh-arm", { rotate: 0 }, { duration: 0.3 })
-    }, [animate])
+      controls.current.forEach((c) => c.stop());
+      controls.current = [];
+      animate(".gh-body", { y: 0 }, { duration: 0.3 });
+      animate(".gh-arm", { rotate: 0 }, { duration: 0.3 });
+    }, [animate]);
 
     useImperativeHandle(ref, () => ({
       startAnimation: start,
       stopAnimation: stop,
-    }))
+    }));
 
     useEffect(() => {
       if (autoPlay) {
-        start()
-        return () => { stop() }
+        start();
+        return () => {
+          stop();
+        };
       }
-    }, [autoPlay, start, stop])
+    }, [autoPlay, start, stop]);
 
     return (
       <motion.svg
         ref={scope}
-        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}
-        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}
+        onHoverStart={
+          animateOnHover
+            ? () => {
+                isHovering.current = true;
+                start();
+              }
+            : undefined
+        }
+        onHoverEnd={
+          animateOnHover
+            ? () => {
+                isHovering.current = false;
+                stop();
+              }
+            : undefined
+        }
         xmlns="http://www.w3.org/2000/svg"
         width={size}
         height={size}
@@ -112,8 +124,8 @@ export const GitHubIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           style={{ originX: "9px", originY: "17px" }}
         />
       </motion.svg>
-    )
+    );
   },
-)
+);
 
-GitHubIcon.displayName = "GitHubIcon"
+GitHubIcon.displayName = "GitHubIcon";

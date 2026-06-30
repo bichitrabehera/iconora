@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import type { IconData } from "@/lib/icon-data"
-import { IconCard } from "@/components/icons/IconCard"
+import type { IconData } from "@/lib/icon-data";
+import { IconCard } from "@/components/icons/IconCard";
 
 export function IconGrid({ icons }: { icons: IconData[] }) {
   if (icons.length === 0) {
     return (
-      <p className="py-12 text-center text text-muted-foreground">
+      <p className="text text-muted-foreground py-12 text-center">
         no icons found
       </p>
-    )
+    );
   }
 
   return (
@@ -18,5 +18,5 @@ export function IconGrid({ icons }: { icons: IconData[] }) {
         <IconCard key={icon.slug} icon={icon} />
       ))}
     </div>
-  )
+  );
 }

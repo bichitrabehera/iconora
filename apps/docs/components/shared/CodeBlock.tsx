@@ -1,14 +1,26 @@
-import { CopyButton } from "@/components/shared/CopyButton";
+import { CopyButton } from "@/components/copy-button";
 
 export function CodeBlock({ title, code }: { title: string; code: string }) {
   return (
-    <div className="border-border overflow-hidden rounded-lg border">
-      <div className="border-border bg-card flex items-center justify-between border-b px-4 py-2">
-        <span className="text-muted-foreground text-xs">{title}</span>
-        <CopyButton value={code} label="Copy" />
+    <div className="relative overflow-hidden rounded-xl border border-neutral-800 ">
+      <div className="flex h-10 items-center justify-between border-b px-2">
+        <code>
+          <span className="text-xs ml-2 text-white">{title}</span>
+        </code>
+        <CopyButton
+          className="size-6 rounded-md border-none [&_svg:not([class*='size-'])]:size-3.5"
+          variant="ghost"
+          size="icon-sm"
+          text={code}
+        />
       </div>
-      <pre className="overflow-x-auto p-4 text-sm">
-        <code>{code}</code>
+      <pre className="overflow-x-auto overscroll-x-contain p-4 leading-6">
+        <code
+          data-slot="code-block"
+          className="text-muted-foreground font-mono text-sm"
+        >
+          {code}
+        </code>
       </pre>
     </div>
   );

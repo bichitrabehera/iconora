@@ -23,44 +23,21 @@ export function IconTabs({ icon }: { icon: IconData }) {
   const [active, setActive] = useState<Tab>("shadcn");
 
   return (
-    <div>
-      <div className="border-border mb-4 flex gap-1 border-b">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActive(tab)}
-            className={`text cursor-pointer px-3 pb-2 font-medium transition-colors ${
-              active === tab
-                ? "border-foreground text-foreground border-b-2"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+    <div className="mx-auto max-w-4xl">
+      <div className="bg-background sticky top-0 z-50 py-4">
+        <CodeBlockCommand
+          pnpm={`pnpm dlx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+          npm={`npx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+          bun={`bunx --bun shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
+        />
       </div>
 
-      <div>
-        {active === "shadcn" && (
-          <div>
-            <CodeBlockCommand
-              // prompt="Add this component to your project"
-              pnpm={`pnpm dlx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
-              npm={`npx shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
-              bun={`bunx --bun shadcn@latest add ${baseUrl}/r/${icon.category}/${icon.slug}.json`}
-            />
-          </div>
-        )}
-
-        {active === "svg" && (
-          <div>
-            <CodeBlock title="SVG" code={icon.svg} />
-            <p className="text-muted-foreground mt-2 text-xs">
-              SVG exports are intentionally static for maximum compatibility.
-              Use the Shadcn component for interactive hover animations.
-            </p>
-          </div>
-        )}
+      <div className="mt-4">
+        <CodeBlock title="svg" code={icon.svg} />
+        <p className="text-muted-foreground mt-2 text-xs">
+          SVG exports are intentionally static for maximum compatibility. Use
+          the Shadcn component for interactive hover animations.
+        </p>
       </div>
     </div>
   );

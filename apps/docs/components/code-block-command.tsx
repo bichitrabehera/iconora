@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
-import { ScrollArea } from "@base-ui/react/scroll-area"
-import { useAtom } from "jotai"
-import { atomWithStorage } from "jotai/utils"
+import { useMemo } from "react";
+import { ScrollArea } from "@base-ui/react/scroll-area";
+import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Tabs,
   TabsContent,
   TabsIndicator,
   TabsList,
   TabsTrigger,
-} from "@/components/tabs"
-import { CopyButton } from "@/components/copy-button"
-import { IconSwap, IconSwapItem } from "@/components/icon-swap"
-import { TextAlignStartIcon, TerminalIcon } from "lucide-react"
+} from "@/components/tabs";
+import { CopyButton } from "@/components/copy-button";
+import { IconSwap, IconSwapItem } from "@/components/icon-swap";
+import { TextAlignStartIcon, TerminalIcon } from "lucide-react";
 
-export type PackageManager = "prompt" | "pnpm" | "yarn" | "npm" | "bun"
+export type PackageManager = "prompt" | "pnpm" | "yarn" | "npm" | "bun";
 
 const packageManagerAtom = atomWithStorage<PackageManager>(
   "packageManager",
-  "pnpm"
-)
+  "pnpm",
+);
 
 export function usePackageManager() {
-  return useAtom(packageManagerAtom)
+  return useAtom(packageManagerAtom);
 }
 
 /**
@@ -35,26 +35,26 @@ export type CodeBlockCommandProps = {
   /**
    * Natural language instruction for AI agents to install a package or component.
    */
-  prompt?: string
+  prompt?: string;
   /**
    * Command to execute with pnpm package manager.
    */
-  pnpm?: string
+  pnpm?: string;
 
   /**
    * Command to execute with yarn package manager.
    */
-  yarn?: string
+  yarn?: string;
 
   /**
    * Command to execute with npm package manager.
    */
-  npm?: string
+  npm?: string;
 
   /**
    * Command to execute with bun package manager.
    */
-  bun?: string
+  bun?: string;
 
   /**
    * Callback invoked when a command is successfully copied to clipboard.
@@ -77,9 +77,9 @@ export type CodeBlockCommandProps = {
    * ```
    */
   onCopySuccess?: (data: {
-    packageManager: PackageManager
-    command: string
-  }) => void
+    packageManager: PackageManager;
+    command: string;
+  }) => void;
 
   /**
    * Callback invoked when copying to clipboard fails.
@@ -98,8 +98,8 @@ export type CodeBlockCommandProps = {
    * />
    * ```
    */
-  onCopyError?: (error: Error) => void
-}
+  onCopyError?: (error: Error) => void;
+};
 
 export function CodeBlockCommand({
   prompt,
@@ -110,7 +110,7 @@ export function CodeBlockCommand({
   onCopySuccess,
   onCopyError,
 }: CodeBlockCommandProps) {
-  const [packageManager, setPackageManager] = usePackageManager()
+  const [packageManager, setPackageManager] = usePackageManager();
 
   const tabs = useMemo(() => {
     return {
@@ -119,29 +119,29 @@ export function CodeBlockCommand({
       yarn,
       npm,
       bun,
-    }
-  }, [prompt, pnpm, yarn, npm, bun])
+    };
+  }, [prompt, pnpm, yarn, npm, bun]);
 
   const tabsFiltered = useMemo(
     () => Object.entries(tabs).filter(([, value]) => !!value),
-    [tabs]
-  )
+    [tabs],
+  );
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-[#101010] border border-neutral-900">
+    <div className="relative overflow-hidden rounded-xl border border-neutral-800">
       <Tabs
         className="gap-0"
         value={packageManager}
         onValueChange={(value) => {
-          setPackageManager(value as PackageManager)
+          setPackageManager(value as PackageManager);
         }}
       >
-        <ScrollArea.Root className="w-full pr-10 shadow-[inset_0_-1px_0_0] shadow-border">
+        <ScrollArea.Root className="shadow-border w-full pr-10 shadow-[inset_0_-1px_0_0]">
           <TabsList
             className={cn(
-              "h-10 max-w-full justify-start rounded-none bg-transparent p-0 pl-4 inset-ring-0 dark:bg-transparent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
+              "[&_svg]:text-muted-foreground h-10 max-w-full justify-start rounded-none bg-transparent p-0 pl-4 inset-ring-0 dark:bg-transparent [&_svg]:size-4 [&_svg]:shrink-0",
               "[--scroll-area-overflow-x-end:inherit] [--scroll-area-overflow-x-start:inherit]",
-              "mask-linear-[to_right,transparent_0,black_min(2.5rem,var(--scroll-area-overflow-x-start)),black_calc(100%-min(2.5rem,var(--scroll-area-overflow-x-end,2.5rem))),transparent_100%]"
+              "mask-linear-[to_right,transparent_0,black_min(2.5rem,var(--scroll-area-overflow-x-start)),black_calc(100%-min(2.5rem,var(--scroll-area-overflow-x-end,2.5rem))),transparent_100%]",
             )}
             render={<ScrollArea.Viewport />}
           >
@@ -160,10 +160,10 @@ export function CodeBlockCommand({
                 >
                   {key}
                 </TabsTrigger>
-              )
+              );
             })}
 
-            <TabsIndicator className="h-0.5 translate-y-0 rounded-none bg-foreground ring-0 dark:bg-foreground" />
+            <TabsIndicator className="bg-foreground dark:bg-foreground h-0.5 translate-y-0 rounded-none ring-0" />
           </TabsList>
         </ScrollArea.Root>
 
@@ -177,7 +177,7 @@ export function CodeBlockCommand({
                 <code
                   data-slot="code-block"
                   data-language="bash"
-                  className="font-mono text text-muted-foreground group-data-[pm=prompt]/tabs-content-pre:whitespace-normal"
+                  className="text text-muted-foreground font-mono group-data-[pm=prompt]/tabs-content-pre:whitespace-normal"
                 >
                   <span className="select-none group-data-[pm=prompt]/tabs-content-pre:hidden">
                     ${" "}
@@ -186,7 +186,7 @@ export function CodeBlockCommand({
                 </code>
               </pre>
             </TabsContent>
-          )
+          );
         })}
       </Tabs>
 
@@ -199,21 +199,18 @@ export function CodeBlockCommand({
           onCopySuccess?.({
             packageManager,
             command: copiedCommand,
-          })
+          });
         }}
         onCopyError={onCopyError}
       />
     </div>
-  )
+  );
 }
 
 function getIconForPackageManager(manager: PackageManager) {
   switch (manager) {
     case "prompt":
-      return (
-        <TextAlignStartIcon
-        />
-      )
+      return <TextAlignStartIcon />;
     case "pnpm":
       return (
         <svg viewBox="0 0 24 24">
@@ -222,7 +219,7 @@ function getIconForPackageManager(manager: PackageManager) {
             fill="currentColor"
           />
         </svg>
-      )
+      );
     case "yarn":
       return (
         <svg viewBox="0 0 24 24">
@@ -231,7 +228,7 @@ function getIconForPackageManager(manager: PackageManager) {
             fill="currentColor"
           />
         </svg>
-      )
+      );
     case "npm":
       return (
         <svg viewBox="0 0 24 24">
@@ -240,7 +237,7 @@ function getIconForPackageManager(manager: PackageManager) {
             fill="currentColor"
           />
         </svg>
-      )
+      );
     case "bun":
       return (
         <svg viewBox="0 0 24 24">
@@ -249,12 +246,9 @@ function getIconForPackageManager(manager: PackageManager) {
             fill="currentColor"
           />
         </svg>
-      )
+      );
     default:
-      return (
-        <TerminalIcon
-        />
-      )
+      return <TerminalIcon />;
   }
 }
 
@@ -265,23 +259,23 @@ export type ConvertNpmCommandResult = {
   /**
    * Command for pnpm package manager.
    */
-  pnpm: string
+  pnpm: string;
 
   /**
    * Command for yarn package manager.
    */
-  yarn: string
+  yarn: string;
 
   /**
    * Command for npm package manager.
    */
-  npm: string
+  npm: string;
 
   /**
    * Command for bun package manager.
    */
-  bun: string
-}
+  bun: string;
+};
 
 /**
  * Converts a standard npm command into equivalent commands for pnpm, yarn, npm,
@@ -314,7 +308,7 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
       yarn: npmCommand.replaceAll("npm install", "yarn add"),
       npm: npmCommand,
       bun: npmCommand.replaceAll("npm install", "bun add"),
-    }
+    };
   }
 
   // npx create- (must be checked before generic npx)
@@ -324,7 +318,7 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
       yarn: npmCommand.replace("npx create-", "yarn create "),
       npm: npmCommand,
       bun: npmCommand.replace("npx", "bunx --bun"),
-    }
+    };
   }
 
   // npm create
@@ -334,7 +328,7 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
       yarn: npmCommand.replace("npm create", "yarn create"),
       npm: npmCommand,
       bun: npmCommand.replace("npm create", "bun create"),
-    }
+    };
   }
 
   // npx (general)
@@ -344,7 +338,7 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
       yarn: npmCommand.replace("npx", "yarn dlx"),
       npm: npmCommand,
       bun: npmCommand.replace("npx", "bunx --bun"),
-    }
+    };
   }
 
   // npm run
@@ -354,7 +348,7 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
       yarn: npmCommand.replace("npm run", "yarn"),
       npm: npmCommand,
       bun: npmCommand.replace("npm run", "bun"),
-    }
+    };
   }
 
   return {
@@ -362,5 +356,5 @@ export function convertNpmCommand(npmCommand: string): ConvertNpmCommandResult {
     yarn: npmCommand,
     npm: npmCommand,
     bun: npmCommand,
-  }
+  };
 }

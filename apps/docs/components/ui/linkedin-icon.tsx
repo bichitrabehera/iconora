@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   forwardRef,
@@ -6,10 +6,10 @@ import {
   useRef,
   useCallback,
   useEffect,
-} from "react"
-import { motion, useAnimate } from "motion/react"
-import type { AnimatedIconProps, AnimatedIconHandle } from "./types"
-import type { AnimationOptions } from "motion/react"
+} from "react";
+import { motion, useAnimate } from "motion/react";
+import type { AnimatedIconProps, AnimatedIconHandle } from "./types";
+import type { AnimationOptions } from "motion/react";
 
 export const LinkedInIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   (
@@ -25,19 +25,19 @@ export const LinkedInIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     },
     ref,
   ) => {
-    const [scope, animate] = useAnimate()
-    const controls = useRef<Array<ReturnType<typeof animate>>>([])
-    const isHovering = useRef(false)
+    const [scope, animate] = useAnimate();
+    const controls = useRef<Array<ReturnType<typeof animate>>>([]);
+    const isHovering = useRef(false);
 
     type AnimDef = {
-      selector: string
-      keyframes: Record<string, number[]>
-      options: { duration: number; ease: string; repeat: number }
-    }
+      selector: string;
+      keyframes: Record<string, number[]>;
+      options: { duration: number; ease: string; repeat: number };
+    };
 
     const start = useCallback(async () => {
-      controls.current.forEach((c) => c.stop())
-      controls.current = []
+      controls.current.forEach((c) => c.stop());
+      controls.current = [];
 
       const anims: AnimDef[] = [
         {
@@ -55,48 +55,60 @@ export const LinkedInIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           keyframes: { scale: [1, 1.3, 1] },
           options: { duration: 0.6, ease: "easeInOut", repeat: Infinity },
         },
-      ]
+      ];
 
       for (const anim of anims) {
         const opts = {
           ...anim.options,
           ...(duration ? { duration } : {}),
           ...(!loop ? { repeat: 0 } : {}),
-        } as AnimationOptions
-        const ctrl = animate(
-          anim.selector,
-          anim.keyframes,
-          opts,
-        )
-        controls.current.push(ctrl)
+        } as AnimationOptions;
+        const ctrl = animate(anim.selector, anim.keyframes, opts);
+        controls.current.push(ctrl);
       }
-    }, [animate, loop, duration])
+    }, [animate, loop, duration]);
 
     const stop = useCallback(async () => {
-      controls.current.forEach((c) => c.stop())
-      controls.current = []
-      animate(".li-in", { scale: 1 }, { duration: 0.3 })
-      animate(".li-in2", { scale: 1 }, { duration: 0.3 })
-      animate(".li-dot", { scale: 1 }, { duration: 0.3 })
-    }, [animate])
+      controls.current.forEach((c) => c.stop());
+      controls.current = [];
+      animate(".li-in", { scale: 1 }, { duration: 0.3 });
+      animate(".li-in2", { scale: 1 }, { duration: 0.3 });
+      animate(".li-dot", { scale: 1 }, { duration: 0.3 });
+    }, [animate]);
 
     useImperativeHandle(ref, () => ({
       startAnimation: start,
       stopAnimation: stop,
-    }))
+    }));
 
     useEffect(() => {
       if (autoPlay) {
-        start()
-        return () => { stop() }
+        start();
+        return () => {
+          stop();
+        };
       }
-    }, [autoPlay, start, stop])
+    }, [autoPlay, start, stop]);
 
     return (
       <motion.svg
         ref={scope}
-        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}
-        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}
+        onHoverStart={
+          animateOnHover
+            ? () => {
+                isHovering.current = true;
+                start();
+              }
+            : undefined
+        }
+        onHoverEnd={
+          animateOnHover
+            ? () => {
+                isHovering.current = false;
+                stop();
+              }
+            : undefined
+        }
         xmlns="http://www.w3.org/2000/svg"
         width={size}
         height={size}
@@ -129,8 +141,8 @@ export const LinkedInIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           style={{ originX: "4px", originY: "4px" }}
         />
       </motion.svg>
-    )
+    );
   },
-)
+);
 
-LinkedInIcon.displayName = "LinkedInIcon"
+LinkedInIcon.displayName = "LinkedInIcon";

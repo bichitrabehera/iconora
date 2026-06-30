@@ -10,7 +10,7 @@ export function IconPreview({ icon }: { icon: IconData }) {
       <div className="flex w-full items-start justify-start">
         <BackButton />
       </div>
-      <div className="border-border bg-card flex size-24 items-center justify-center rounded-xl border transition-shadow duration-300 hover:shadow-lg">
+      <div className="border-border bg-background flex size-24 items-center justify-center rounded-xl border transition-shadow duration-300 hover:shadow-lg">
         <AnimatedIcon slug={icon.slug} size={40} />
       </div>
       <div className="mt-2">
