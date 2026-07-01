@@ -1,0 +1,34 @@
+{
+  "name": "gitlab-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/gitlab-icon.tsx",
+      "content": "\"use client\"\r\n\r\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { gitlabIconData } from \"./gitlab.data\"\n\nexport const GitlabIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: { duration: number; ease: string; repeat: number }\n    }\n\n    const anims: AnimDef[] = [\n        { selector: \".gl-tent\", keyframes: { rotate: [-2, 2, -2] }, options: { duration: 2, ease: \"easeInOut\", repeat: Infinity } }\n      ]\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      for (const anim of anims) {\n        const reset: Record<string, number> = {}\n        for (const [key, vals] of Object.entries(anim.keyframes)) {\n          reset[key] = vals[0]\n        }\n        animate(anim.selector, reset, { duration: 0.25 })\n      }\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n\n        <path className=\"gl-tent\" d=\"M21 14l-9 7l-9 -7l3 -11l3 7h6l3 -7l3 11\" style={{ transformOrigin: \"12px 14px\" }} />\n      </motion.svg>\n    )\n  },\n)\n\nGitlabIcon.displayName = \"GitlabIcon\"\r\n",
+      "type": "registry:component",
+      "target": "@ui/gitlab-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "devtools"
+  ],
+  "meta": {
+    "name": "GitLab",
+    "tags": [
+      "gitlab",
+      "devops",
+      "ci-cd",
+      "repository",
+      "platform"
+    ]
+  }
+}

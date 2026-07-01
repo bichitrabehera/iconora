@@ -1,0 +1,34 @@
+{
+  "name": "nextjs-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/nextjs-icon.tsx",
+      "content": "\"use client\"\n\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { nextjsIconData } from \"./nextjs.data\"\n\nexport const NextjsIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: { duration: number; ease: string; repeat: number }\n    }\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      const anims: AnimDef[] = [\n        {\n          selector: \".nj-arrow\",\n          keyframes: { x: [0, 2, 0], y: [0, -2, 0] },\n          options: { duration: 1.2, ease: \"easeInOut\", repeat: Infinity },\n        },\n      ]\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      animate(\".nj-arrow\", { x: 0, y: 0 }, { duration: 0.25 })\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n        <path d=\"M9 15v-6l7.745 10.65a9 9 0 1 1 2.255 -1.993\" />\n        <motion.path className=\"nj-arrow\" d=\"M15 12v-3\" style={{ transformOrigin: \"15px 10.5px\" }} />\n      </motion.svg>\n    )\n  },\n)\n\nNextjsIcon.displayName = \"NextjsIcon\"\n",
+      "type": "registry:component",
+      "target": "@ui/nextjs-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "tech"
+  ],
+  "meta": {
+    "name": "Next.js",
+    "tags": [
+      "nextjs",
+      "react",
+      "framework",
+      "ssr",
+      "frontend"
+    ]
+  }
+}

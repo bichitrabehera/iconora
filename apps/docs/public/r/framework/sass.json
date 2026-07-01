@@ -1,0 +1,34 @@
+{
+  "name": "sass-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/sass-icon.tsx",
+      "content": "\"use client\"\r\n\r\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { sassIconData } from \"./sass.data\"\n\nexport const SassIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: { duration: number; ease: string; repeat: number }\n    }\n\n    const anims: AnimDef[] = [\n        { selector: \".sa-swirl\", keyframes: { rotate: [0, 3, -2, 3, 0] }, options: { duration: 2.5, ease: \"easeInOut\", repeat: Infinity } }\n      ]\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      for (const anim of anims) {\n        const reset: Record<string, number> = {}\n        for (const [key, vals] of Object.entries(anim.keyframes)) {\n          reset[key] = vals[0]\n        }\n        animate(anim.selector, reset, { duration: 0.25 })\n      }\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n\n        <g className=\"sa-swirl\" style={{ transformOrigin: \"12px 12px\" }}>\n        <path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\" />\n        <path d=\"M12 10.523c2.46 -.826 4 -.826 4 -2.155c0 -1.366 -1.347 -1.366 -2.735 -1.366c-1.91 0 -3.352 .49 -4.537 1.748c-.848 .902 -1.027 2.449 -.153 3.307c.973 .956 3.206 1.789 2.884 3.493c-.233 1.235 -1.469 1.823 -2.617 1.202c-.782 -.424 -.454 -1.746 .626 -2.512s2.822 -.992 4.1 -.24c.98 .575 1.046 1.724 .434 2.193\" />\n        </g>\n      </motion.svg>\n    )\n  },\n)\n\nSassIcon.displayName = \"SassIcon\"\r\n",
+      "type": "registry:component",
+      "target": "@ui/sass-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "framework"
+  ],
+  "meta": {
+    "name": "Sass",
+    "tags": [
+      "sass",
+      "css",
+      "preprocessor",
+      "styles",
+      "frontend"
+    ]
+  }
+}

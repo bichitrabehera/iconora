@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="https://img.shields.io/badge/iconora-animated%20icons-000?style=flat&labelColor=888" alt="Iconora">
+</p>
 
-## Getting Started
+<h1 align="center">Iconora</h1>
 
-First, run the development server:
+<p align="center">
+  Animated brand icons for React.<br>
+  Add one. Hover it. Done.
+</p>
+
+<p align="center">
+  <a href="https://iconora.vercel.app">🌐 Browse Icons</a>
+  ·
+  <a href="#usage">📖 Usage</a>
+  ·
+  <a href="#license">📄 License</a>
+</p>
+
+<p align="center">
+  ⭐ Star us on GitHub — it helps more people find this project.
+</p>
+
+---
+
+Add animated versions of the internet's most recognizable brand icons to your React project in 10 seconds. No config. No build step. Just install and hover.
+
+Available as a **[shadcn](https://ui.shadcn.com) registry**. Built with [motion](https://motion.dev) and TypeScript.
+
+## Usage
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn@latest add https://iconora.vercel.app/r/social/github.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```tsx
+import { GitHubIcon } from "@/components/ui/github-icon";
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+export function Header() {
+  return <GitHubIcon size={32} />;
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Hover over it — the icon comes to life.
 
-## Learn More
+### Props
 
-To learn more about Next.js, take a look at the following resources:
+All icons accept these optional props:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Prop             | Type      | What it does                             |
+| ---------------- | --------- | ---------------------------------------- |
+| `size`           | `number`  | Width & height in px (default: `24`)     |
+| `color`          | `string`  | Stroke color (default: `"currentColor"`) |
+| `strokeWidth`    | `number`  | SVG stroke width (default: `2`)          |
+| `animateOnHover` | `boolean` | Animate on hover (default: `true`)       |
+| `autoPlay`       | `boolean` | Animate on mount (default: `false`)      |
+| `loop`           | `boolean` | Repeat animation (default: `true`)       |
+| `duration`       | `number`  | Override animation speed                 |
+| `className`      | `string`  | Extra CSS classes                        |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Browse All Icons
 
-## Deploy on Vercel
+See every icon in action at **[iconora.vercel.app](https://iconora.vercel.app)** — preview animations, grab the install command, or copy the raw SVG.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT © [Bichitra Behera](LICENSE)

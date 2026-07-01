@@ -1,0 +1,1 @@
+export { OpenaiIcon } from "./openai"

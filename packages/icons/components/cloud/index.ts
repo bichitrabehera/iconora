@@ -1,0 +1,8 @@
+export { AwsIcon } from "./aws"
+export { AzureIcon } from "./azure"
+export { CloudflareIcon } from "./cloudflare"
+export { FirebaseIcon } from "./firebase"
+export { MongodbIcon } from "./mongodb"
+export { PlanetScaleIcon } from "./planetscale"
+export { SupabaseIcon } from "./supabase"
+export { VercelIcon } from "./vercel"

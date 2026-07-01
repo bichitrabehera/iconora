@@ -15,8 +15,10 @@ for (const icon of icons) {
   const dir = resolve(outDir, icon.category);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
-  const sourcePath = resolve(iconsDir, `${icon.slug}.tsx`);
-  const source = readFileSync(sourcePath, "utf-8");
+  const sourcePath = resolve(iconsDir, `components/${icon.category}/${icon.slug}.tsx`);
+  let source = readFileSync(sourcePath, "utf-8");
+  source = source.replace(/from\s+"\.\.\/\.\.\/types"/g, 'from "./types"');
+  source = source.replace(/from\s+"\.\.\/\.\.\/data\/.+?\/(.+?)"/g, 'from "./$1"');
 
   const registry = {
     name: `${icon.slug}-icon`,

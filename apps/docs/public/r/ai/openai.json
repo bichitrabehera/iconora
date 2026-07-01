@@ -1,0 +1,34 @@
+{
+  "name": "openai-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/openai-icon.tsx",
+      "content": "\"use client\"\r\n\r\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { openaiIconData } from \"./openai.data\"\n\nexport const OpenaiIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: { duration: number; ease: string; repeat: number }\n    }\n\n    const anims: AnimDef[] = [\n        { selector: \".oa-orbit\", keyframes: { rotate: [0, 5, -3, 5, 0] }, options: { duration: 4, ease: \"easeInOut\", repeat: Infinity } }\n      ]\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      for (const anim of anims) {\n        const reset: Record<string, number> = {}\n        for (const [key, vals] of Object.entries(anim.keyframes)) {\n          reset[key] = vals[0]\n        }\n        animate(anim.selector, reset, { duration: 0.25 })\n      }\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n\n        <g className=\"oa-orbit\" style={{ transformOrigin: \"12px 12px\" }}>\n        <path d=\"M11.217 19.384a3.501 3.501 0 0 0 6.783 -1.217v-5.167l-6 -3.35\" />\n        <path d=\"M5.214 15.014a3.501 3.501 0 0 0 4.446 5.266l4.34 -2.534v-6.946\" />\n        <path d=\"M6 7.63c-1.391 -.236 -2.787 .395 -3.534 1.689a3.474 3.474 0 0 0 1.271 4.745l4.263 2.514l6 -3.348\" />\n        <path d=\"M12.783 4.616a3.501 3.501 0 0 0 -6.783 1.217v5.067l6 3.45\" />\n        <path d=\"M18.786 8.986a3.501 3.501 0 0 0 -4.446 -5.266l-4.34 2.534v6.946\" />\n        <path d=\"M18 16.302c1.391 .236 2.787 -.395 3.534 -1.689a3.474 3.474 0 0 0 -1.271 -4.745l-4.308 -2.514l-5.955 3.42\" />\n        </g>\n      </motion.svg>\n    )\n  },\n)\n\nOpenaiIcon.displayName = \"OpenaiIcon\"\r\n",
+      "type": "registry:component",
+      "target": "@ui/openai-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "meta": {
+    "name": "OpenAI",
+    "tags": [
+      "openai",
+      "chatgpt",
+      "ai",
+      "language-model",
+      "gpt"
+    ]
+  }
+}

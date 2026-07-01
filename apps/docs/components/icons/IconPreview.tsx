@@ -6,7 +6,7 @@ import BackButton from "../shared/BackButton";
 
 export function IconPreview({ icon }: { icon: IconData }) {
   return (
-    <div className="mt-10 mb-10 flex flex-col items-center gap-4 text-center">
+    <div className="mb-10 flex flex-col items-center gap-4 text-center">
       <div className="flex w-full items-start justify-start">
         <BackButton />
       </div>
