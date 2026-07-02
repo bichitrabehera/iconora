@@ -1,4 +1,5 @@
 export type { AnimatedIconProps, AnimatedIconHandle, IconData } from "./types"
+export { brandColors, getBrandColor } from "./brand-colors"
 
 export {
   DiscordIcon,
@@ -77,6 +78,12 @@ export {
   CoinbaseIcon,
   PaypalIcon,
   StripeIcon,
+  GamepadIcon,
+  PacmanIcon,
+  GhostIcon,
+  JoystickIcon,
+  DpadIcon,
+  TetrisIcon,
 } from "./components"
 
 export {
@@ -156,6 +163,12 @@ export {
   coinbaseIconData,
   paypalIconData,
   stripeIconData,
+  gamepadIconData,
+  pacmanIconData,
+  ghostIconData,
+  joystickIconData,
+  dpadIconData,
+  tetrisIconData,
 } from "./data/index"
 
 export { icons } from "./data/index"

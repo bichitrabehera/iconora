@@ -8,6 +8,7 @@ import { frameworkIcons } from "./framework"
 import { mediaIcons } from "./media"
 import { osIcons } from "./os"
 import { paymentIcons } from "./payment"
+import { gameIcons } from "./game"
 
 export type { IconData }
 
@@ -114,6 +115,15 @@ export {
   stripeIconData,
 } from "./payment"
 
+export {
+  gamepadIconData,
+  pacmanIconData,
+  ghostIconData,
+  joystickIconData,
+  dpadIconData,
+  tetrisIconData,
+} from "./game"
+
 export const icons: IconData[] = [
   ...socialIcons,
   ...techIcons,
@@ -124,4 +134,5 @@ export const icons: IconData[] = [
   ...mediaIcons,
   ...osIcons,
   ...paymentIcons,
+  ...gameIcons,
 ]

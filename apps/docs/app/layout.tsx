@@ -31,8 +31,24 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("dark", geistMono.className, "font-sans", geist.variable)}
+      className={cn(geistMono.className, "font-sans", geist.variable)}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var theme = localStorage.getItem("theme");
+                if (!theme) {
+                  theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                }
+                document.documentElement.classList.toggle("dark", theme === "dark");
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="bg-background text-foreground min-h-screen antialiased">
         {children}
       </body>

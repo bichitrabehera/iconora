@@ -1,0 +1,34 @@
+{
+  "name": "gamepad-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/gamepad-icon.tsx",
+      "content": "\"use client\"\n\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { gamepadIconData } from \"./gamepad.data\"\n\nexport const GamepadIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: Partial<AnimationOptions>\n    }\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      const anims: AnimDef[] = [\n        {\n          selector: \".gp-btn-l\",\n          keyframes: { y: [0, 1, 0] },\n          options: { duration: 0.6, ease: \"easeInOut\", repeat: Infinity },\n        },\n        {\n          selector: \".gp-btn-r\",\n          keyframes: { y: [0, 1, 0] },\n          options: { duration: 0.6, ease: \"easeInOut\", repeat: Infinity, delay: 0.3 },\n        },\n      ]\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      animate(\".gp-btn-l\", { y: 0 }, { duration: 0.2 })\n      animate(\".gp-btn-r\", { y: 0 }, { duration: 0.2 })\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n        <motion.path\n          d=\"M4 12a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v3a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2H10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"\n        />\n        <motion.circle className=\"gp-btn-l\" cx=\"8\" cy=\"11\" r=\"1\" />\n        <motion.circle className=\"gp-btn-r\" cx=\"16\" cy=\"11\" r=\"1\" />\n      </motion.svg>\n    )\n  },\n)\n\nGamepadIcon.displayName = \"GamepadIcon\"\n",
+      "type": "registry:component",
+      "target": "@ui/gamepad-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n  brandColor?: string | boolean\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "game"
+  ],
+  "meta": {
+    "name": "Gamepad",
+    "tags": [
+      "gamepad",
+      "controller",
+      "gaming",
+      "console",
+      "play"
+    ]
+  }
+}

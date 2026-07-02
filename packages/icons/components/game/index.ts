@@ -1,0 +1,6 @@
+export { GamepadIcon } from "./gamepad"
+export { PacmanIcon } from "./pacman"
+export { GhostIcon } from "./ghost"
+export { JoystickIcon } from "./joystick"
+export { DpadIcon } from "./dpad"
+export { TetrisIcon } from "./tetris"

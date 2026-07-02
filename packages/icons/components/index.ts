@@ -98,3 +98,12 @@ export {
   PaypalIcon,
   StripeIcon,
 } from "./payment"
+
+export {
+  GamepadIcon,
+  PacmanIcon,
+  GhostIcon,
+  JoystickIcon,
+  DpadIcon,
+  TetrisIcon,
+} from "./game"

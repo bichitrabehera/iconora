@@ -1,0 +1,34 @@
+{
+  "name": "pacman-icon",
+  "type": "registry:component",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "ui/pacman-icon.tsx",
+      "content": "\"use client\"\n\nimport {\n  forwardRef,\n  useImperativeHandle,\n  useRef,\n  useCallback,\n  useEffect,\n} from \"react\"\nimport { motion, useAnimate } from \"motion/react\"\nimport type { AnimatedIconProps, AnimatedIconHandle } from \"./types\"\nimport type { AnimationOptions } from \"motion/react\"\nimport { pacmanIconData } from \"./pacman.data\"\n\nexport const PacmanIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(\n  (\n    {\n      size = 24,\n      color = \"currentColor\",\n      strokeWidth = 2,\n      animateOnHover = true,\n      autoPlay = false,\n      loop = true,\n      duration,\n      className = \"\",\n    },\n    ref,\n  ) => {\n    const [scope, animate] = useAnimate()\n    const controls = useRef<Array<ReturnType<typeof animate>>>([])\n    const isHovering = useRef(false)\n\n    type AnimDef = {\n      selector: string\n      keyframes: Record<string, number[]>\n      options: Partial<AnimationOptions>\n    }\n\n    const start = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n\n      const anims: AnimDef[] = [\n        {\n          selector: \".pac-body\",\n          keyframes: { y: [0, -1.5, 0] },\n          options: { duration: 0.8, ease: \"easeInOut\", repeat: Infinity },\n        },\n      ]\n\n      for (const anim of anims) {\n        const opts = {\n          ...anim.options,\n          ...(duration ? { duration } : {}),\n          ...(!loop ? { repeat: 0 } : {}),\n        } as AnimationOptions\n        const ctrl = animate(anim.selector, anim.keyframes, opts)\n        controls.current.push(ctrl)\n      }\n    }, [animate, loop, duration])\n\n    const stop = useCallback(async () => {\n      controls.current.forEach((c) => c.stop())\n      controls.current = []\n      animate(\".pac-body\", { y: 0 }, { duration: 0.2 })\n    }, [animate])\n\n    useImperativeHandle(ref, () => ({\n      startAnimation: start,\n      stopAnimation: stop,\n    }))\n\n    useEffect(() => {\n      if (autoPlay) {\n        start()\n        return () => { stop() }\n      }\n    }, [autoPlay, start, stop])\n\n    return (\n      <motion.svg\n        ref={scope}\n        onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}\n        onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke={color}\n        strokeWidth={strokeWidth}\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n        className={className}\n      >\n        <motion.path\n          className=\"pac-body\"\n          d=\"M12 5a7 7 0 1 0 6.5 10L12 12l6.5-3A7 7 0 0 0 12 5z\"\n          style={{ transformOrigin: \"12px 12px\" }}\n        />\n      </motion.svg>\n    )\n  },\n)\n\nPacmanIcon.displayName = \"PacmanIcon\"\n",
+      "type": "registry:component",
+      "target": "@ui/pacman-icon.tsx"
+    },
+    {
+      "path": "ui/types.ts",
+      "content": "export type AnimatedIconProps = {\n  size?: number\n  color?: string\n  strokeWidth?: number\n  animateOnHover?: boolean\n  autoPlay?: boolean\n  loop?: boolean\n  duration?: number\n  className?: string\n  brandColor?: string | boolean\n}\n\nexport type AnimatedIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type IconData = {\n  name: string\n  slug: string\n  category: string\n  tags: string[]\n  svg: string\n}\n",
+      "type": "registry:file",
+      "target": "@ui/types.ts"
+    }
+  ],
+  "categories": [
+    "game"
+  ],
+  "meta": {
+    "name": "Pac-Man",
+    "tags": [
+      "pacman",
+      "arcade",
+      "classic",
+      "game",
+      "retro"
+    ]
+  }
+}

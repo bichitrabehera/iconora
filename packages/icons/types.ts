@@ -7,6 +7,7 @@ export type AnimatedIconProps = {
   loop?: boolean
   duration?: number
   className?: string
+  brandColor?: string | boolean
 }
 
 export type AnimatedIconHandle = {

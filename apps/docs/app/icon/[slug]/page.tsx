@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { IconPreview } from "@/components/icons/IconPreview";
 import { IconTabs } from "@/components/icons/IconTabs";
 import { getIconBySlug, icons } from "@/lib/icon-data";
@@ -28,6 +29,7 @@ export default async function IconPage({ params }: Props) {
         <IconPreview icon={icon} />
         <IconTabs icon={icon} />
       </main>
+      <Footer />
     </>
   );
 }

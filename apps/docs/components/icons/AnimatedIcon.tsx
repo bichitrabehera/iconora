@@ -77,10 +77,16 @@ import {
   WhatsAppIcon,
   WindowsIcon,
   YouTubeIcon,
+  GamepadIcon,
+  PacmanIcon,
+  GhostIcon,
+  JoystickIcon,
+  DpadIcon,
+  TetrisIcon,
 } from "@iconora/icons";
-import type { AnimatedIconProps } from "@iconora/icons";
+import type { AnimatedIconProps, AnimatedIconHandle } from "@iconora/icons";
 
-const components: Record<string, React.ComponentType<AnimatedIconProps>> = {
+const components: Record<string, React.ForwardRefExoticComponent<AnimatedIconProps & React.RefAttributes<AnimatedIconHandle>>> = {
   android: AndroidIcon,
   angular: AngularIcon,
   apple: AppleIcon,
@@ -157,14 +163,22 @@ const components: Record<string, React.ComponentType<AnimatedIconProps>> = {
   whatsapp: WhatsAppIcon,
   windows: WindowsIcon,
   youtube: YouTubeIcon,
+  gamepad: GamepadIcon,
+  pacman: PacmanIcon,
+  ghost: GhostIcon,
+  joystick: JoystickIcon,
+  dpad: DpadIcon,
+  tetris: TetrisIcon,
 };
 
-export function AnimatedIcon({
-  slug,
-  size = 24,
-  ...props
-}: { slug: string } & Partial<AnimatedIconProps>) {
-  const Component = components[slug];
-  if (!Component) return null;
-  return <Component size={size} {...props} />;
-}
+import { forwardRef } from "react";
+
+export const AnimatedIcon = forwardRef<AnimatedIconHandle, { slug: string } & Partial<AnimatedIconProps>>(
+  ({ slug, size = 24, brandColor, ...props }, ref) => {
+    const Component = components[slug];
+    if (!Component) return null;
+    return <Component ref={ref} size={size} brandColor={brandColor} {...props} />;
+  },
+);
+
+AnimatedIcon.displayName = "AnimatedIcon";

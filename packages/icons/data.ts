@@ -106,3 +106,12 @@ export {
   paypalIconData,
   stripeIconData,
 } from "./data/index";
+
+export {
+  gamepadIconData,
+  pacmanIconData,
+  ghostIconData,
+  joystickIconData,
+  dpadIconData,
+  tetrisIconData,
+} from "./data/index";

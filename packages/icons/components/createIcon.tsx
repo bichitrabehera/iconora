@@ -6,10 +6,12 @@ import {
   useRef,
   useCallback,
   useEffect,
+  useState,
 } from "react"
 import { motion, useAnimate } from "motion/react"
 import type { AnimatedIconProps, AnimatedIconHandle } from "../types"
 import type { AnimationOptions } from "motion/react"
+import { getBrandColor } from "../brand-colors"
 
 export type AnimationDef = {
   selector: string
@@ -33,12 +35,18 @@ export function createIcon(
         loop = true,
         duration,
         className = "",
+        brandColor,
       },
       ref,
     ) => {
       const [scope, animate] = useAnimate()
       const controls = useRef<Array<ReturnType<typeof animate>>>([])
       const isHovering = useRef(false)
+      const [showBrand, setShowBrand] = useState(false)
+
+      const hasBrand = brandColor !== undefined && brandColor !== false
+      const brandValue = typeof brandColor === "string" ? brandColor : (hasBrand ? getBrandColor(slug) : undefined)
+      const effectiveColor = showBrand && brandValue ? brandValue : color
 
       const start = useCallback(async () => {
         controls.current.forEach((c) => c.stop())
@@ -74,18 +82,28 @@ export function createIcon(
       return (
         <motion.svg
           ref={scope}
-          onHoverStart={animateOnHover ? () => { isHovering.current = true; start() } : undefined}
-          onHoverEnd={animateOnHover ? () => { isHovering.current = false; stop() } : undefined}
+          onHoverStart={
+            hasBrand
+              ? () => { setShowBrand(true); if (animateOnHover) { isHovering.current = true; start() } }
+              : animateOnHover ? () => { isHovering.current = true; start() } : undefined
+          }
+          onHoverEnd={
+            hasBrand
+              ? () => { setShowBrand(false); if (animateOnHover) { isHovering.current = false; stop() } }
+              : animateOnHover ? () => { isHovering.current = false; stop() } : undefined
+          }
+          onClick={hasBrand ? () => setShowBrand((p) => !p) : undefined}
           xmlns="http://www.w3.org/2000/svg"
           width={size}
           height={size}
           viewBox="0 0 24 24"
           fill="none"
-          stroke={color}
+          stroke={effectiveColor}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeLinejoin="round"
           className={className}
+          style={{ transition: "stroke 0.2s ease", ...(className ? {} : {}) }}
         >
           {renderSvg()}
         </motion.svg>
